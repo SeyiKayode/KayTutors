@@ -1,0 +1,11 @@
+{% extends 'courses/base.html' %}
+{% block content %}
+    {% load crispy_forms_tags %}
+    <div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-md-6">
+            <h4>You have successfully logged out. <a href="{% url 'users:login' %}">Login back here</a></h4>
+        </div>
+    </div>
+    </div>
+{% endblock %}
