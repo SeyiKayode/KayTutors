@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from datetime import datetime
 import stripe
-stripe.api_key = ''
+stripe.api_key = settings.STRIPE_TEST_KEY
 # Create your models here.
 MEMBERSHIP_CHOICES = (
     ('Enterprise', 'ent'),
