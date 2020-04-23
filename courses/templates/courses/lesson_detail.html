@@ -19,7 +19,7 @@
         poster="{{ object.thumbnail.url }}"
         width="300"
         height="200" controls>
-        <source src="{% static object.video_url %}" type="video/mp4">
+        <source src="{{ object.video_url }}" type="video/mp4">
         Sorry, your browser doesn't support embedded window.
         </video>
         {% else %}

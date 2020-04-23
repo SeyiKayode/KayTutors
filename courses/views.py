@@ -1,16 +1,20 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Course, Lesson
-from memberships.models import UserMembership
 from django.views.generic import ListView, DetailView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Course, Lesson
+from memberships.models import UserMembership
 # Create your views here.
+
+
 class CourseList(ListView):
     model = Course
     template_name = 'courses/course_list.html'
 
+
 class CourseDetail(LoginRequiredMixin, DetailView):
     model = Course
     template_name = 'courses/course_detail.html'
+
 
 class LessonDetail(LoginRequiredMixin, View):
     def get(self, request, course_slug, lesson_slug, *args, **kwargs):

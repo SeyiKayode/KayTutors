@@ -1,11 +1,13 @@
+import stripe
 from django.shortcuts import render, redirect, reverse
-from .models import Membership, UserMembership, Subscription
 from django.views.generic import ListView
 from django.conf import settings
 from django.contrib import messages
-import stripe 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Membership, UserMembership, Subscription
 # Create your views here.
+
 @login_required
 def profile(request):
     user_membership = get_user_membership(request)
@@ -16,11 +18,13 @@ def profile(request):
     }
     return render(request, 'memberships/profile.html', context)
 
+
 def get_user_membership(request):
     user_membership_qs = UserMembership.objects.filter(user=request.user)
     if user_membership_qs.exists():
         return user_membership_qs.first()
     return None
+
 
 def get_user_subscription(request):
     user_subscription_qs = Subscription.objects.filter(user_membership=get_user_membership(request))
@@ -29,6 +33,7 @@ def get_user_subscription(request):
         return user_subscription
     return None
 
+
 def get_selected_membership(request):
     membership_type = request.session['selected_membership_type']
     selected_membership_qs = Membership.objects.filter(membership_type=membership_type)
@@ -36,14 +41,17 @@ def get_selected_membership(request):
         return selected_membership_qs.first()
     return None
 
-class MembershipList(ListView):
+
+class MembershipList(LoginRequiredMixin, ListView):
     model = Membership
     template_name = 'memberships/membership_list.html'
+
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         current_membership = get_user_membership(self.request)
         context['current_membership'] = str(current_membership.membership)
         return context
+
     def post(self, request, **kwargs):
         selected_membership_type = request.POST.get('membership_type')
         user_membership = get_user_membership(request)
@@ -58,6 +66,7 @@ class MembershipList(ListView):
         request.session['selected_membership_type'] = selected_membership.membership_type
         return redirect(reverse('memberships:payment'))
 
+@login_required
 def PaymentView(request):
     user_membership = get_user_membership(request)
     selected_membership = get_selected_membership(request)
@@ -75,12 +84,13 @@ def PaymentView(request):
                 'subscription_id': subscription.id
             }))
         except:
-            messages.info(request, 'An error has occured')
+            messages.info(request, 'An error has occurred')
     context = {
         'publishKey': publishKey,
         'selected_membership': selected_membership
     }
     return render(request, 'memberships/membership_payment.html', context)
+
 
 def updateTransactions(request, subscription_id):
     user_membership = get_user_membership(request)
@@ -97,6 +107,7 @@ def updateTransactions(request, subscription_id):
         pass
     messages.info(request, "Successfully created {} membership".format(selected_membership))
     return redirect('/memberships')
+
 
 def cancelSubscription(request):
     user_subscription = get_user_subscription(request)

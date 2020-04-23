@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+import cloudinary
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -42,8 +42,15 @@ INSTALLED_APPS = [
     'crispy_forms',
     'memberships',
     'courses',
-    'users'
+    'users',
+    'cloudinary',
 ]
+
+cloudinary.config(
+    cloud_name=os.environ.get('CLOUD_NAME'),
+    api_key=os.environ.get('CLOUD_API_KEY'),
+    api_secret=os.environ.get('CLOUD_API_SECRET')
+)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -124,13 +131,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static_root')
-]
-VENV_PATH = os.path.dirname(BASE_DIR)
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+os.makedirs('staticfiles', exist_ok=True)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(VENV_PATH, 'media_root')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
+os.makedirs('media_root', exist_ok=True)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'courses:list'
