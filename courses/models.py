@@ -1,12 +1,8 @@
-import cloudinary.uploader
 from django.db import models
 from django.urls import reverse
 from memberships.models import Membership
 
 # Create your models here.
-
-cloudinary.uploader.upload(open(r"C:\Users\ADMIN1\Downloads\vid.mp4", "rb"), resource_type="video")
-cloudinary.uploader.upload(open(r"C:\Users\ADMIN1\Downloads\flo.jpg", "rb"), resource_type="image")
 
 
 class Course(models.Model):
