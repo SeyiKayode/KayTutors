@@ -92,6 +92,7 @@ def PaymentView(request):
     return render(request, 'memberships/membership_payment.html', context)
 
 
+@login_required
 def updateTransactions(request, subscription_id):
     user_membership = get_user_membership(request)
     selected_membership = get_selected_membership(request)
@@ -106,9 +107,10 @@ def updateTransactions(request, subscription_id):
     except:
         pass
     messages.info(request, "Successfully created {} membership".format(selected_membership))
-    return redirect('/memberships')
+    return redirect('courses:list')
 
 
+@login_required
 def cancelSubscription(request):
     user_subscription = get_user_subscription(request)
     if user_subscription.active is False:
@@ -123,4 +125,4 @@ def cancelSubscription(request):
     user_membership.membership = free_membership
     user_membership.save()
     messages.info(request, "Successfully cancelled membership")
-    return redirect('/memberships')
+    return redirect('courses:list')

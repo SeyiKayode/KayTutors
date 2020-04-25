@@ -1,18 +1,19 @@
+import cloudinary.uploader
 from django.db import models
 from django.urls import reverse
-from cloudinary.models import CloudinaryField
-import cloudinary.uploader
 from memberships.models import Membership
 
 # Create your models here.
 
-cloudinary.uploader.upload_large(r"C:\Users\ADMIN1\Downloads\vid.mp4")
-cloudinary.uploader.upload_image(r"C:\Users\ADMIN1\Downloads\flo.jpg")
+cloudinary.uploader.upload(r"C:\Users\ADMIN1\Downloads\vid.mp4", resource_type="video")
+cloudinary.uploader.upload(r"C:\Users\ADMIN1\Downloads\flo.jpg", resource_type="image")
+
 
 class Course(models.Model):
     slug = models.SlugField()
     title = models.CharField(max_length=120)
     description = models.TextField()
+    position = models.IntegerField(default=1)
     allowed_membership = models.ManyToManyField(Membership)
 
     def __str__(self):
@@ -26,14 +27,15 @@ class Course(models.Model):
         return self.lesson_set.all().order_by('position')
 
 
+
 class Lesson(models.Model):
     slug = models.SlugField()
     title = models.CharField(max_length=120)
     course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True)
     content = models.TextField(blank=True, null=True)
     position = models.IntegerField()
-    video = models.FileField()
-    thumbnail = models.ImageField()
+    video = models.FileField(blank=True, null=True)
+    thumbnail = models.ImageField(blank=True, null=True)
 
     def __str__(self):
         return self.title

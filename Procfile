@@ -1,0 +1,1 @@
+web: gunicorn kaytutors.wsgi --log-file -

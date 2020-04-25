@@ -1,14 +1,8 @@
 {% extends 'courses/base.html' %}
-{% block post_detail_link %}
-{% if object is not None %}
-<li>{{ object.title }}</li>
-{% endif %}
-{% endblock %}
-
 {% block content %}
 <div class='container'>
     <div class='row'>
-        <div class='col-sm-4 col-md-4'>
+        <div class='col-sm-8 col-md-8'>
             <h1>Course</h1>
     <p>{{ object.title }}</p>
     <p>{{ object.description }}</p>

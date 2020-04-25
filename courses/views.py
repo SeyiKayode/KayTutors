@@ -9,6 +9,9 @@ from memberships.models import UserMembership
 class CourseList(ListView):
     model = Course
     template_name = 'courses/course_list.html'
+    def get_queryset(self):
+        course = Course.objects.all().order_by('position')
+        return course
 
 
 class CourseDetail(LoginRequiredMixin, DetailView):
