@@ -5,8 +5,8 @@ from memberships.models import Membership
 
 # Create your models here.
 
-cloudinary.uploader.upload(r"C:\Users\ADMIN1\Downloads\vid.mp4", resource_type="video")
-cloudinary.uploader.upload(r"C:\Users\ADMIN1\Downloads\flo.jpg", resource_type="image")
+cloudinary.uploader.upload(open("vid.mp4", "rb"), resource_type="video")
+cloudinary.uploader.upload(open("flo.jpg", "rb"), resource_type="image")
 
 
 class Course(models.Model):
